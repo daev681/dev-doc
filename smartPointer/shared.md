@@ -55,7 +55,7 @@ int main(int argc, char const *argv[])
 ![image](https://user-images.githubusercontent.com/54939319/189467665-3f21a670-4ec1-4cca-bd48-0ff105927f0d.png)
 
 
--Garbage Collector가 없는 C++는 shared_ptr를 사용한다면 reference counting에 의해서 object 의 life cycle을 결정 , 당연히 ref count가 0 이 되면 object가 해제.
+- Garbage Collector가 없는 C++는 shared_ptr를 사용한다면 reference counting에 의해서 object 의 life cycle을 결정 , 당연히 ref count가 0 이 되면 object가 해제.
 
 - object를 가르키고 있는 pointer가 0이 되면 object 해제.
 
