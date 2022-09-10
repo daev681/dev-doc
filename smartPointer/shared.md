@@ -66,16 +66,3 @@ int main(int argc, char const *argv[])
 - 함수가 해제되면 stack위의 pointer는 메모리에서 사라지게 되고 heap에 남아있는 cat.mVar는 자기자신을 가르키는 포인터 1개가 영원히 남게 됨
 
 - ref count가 1인채로 0이 될 수 없기 때문에 memory 안에 cat.mVar는 영원히 상주하게되어 메모리 릭이 일어남
-
-
--Garbage Collector가 없는 C++는 shared_ptr를 사용한다면 reference counting에 의해서 object 의 life cycle을 결정 , 당연히 ref count가 0 이 되면 object가 해제.
-
-- object를 가르키고 있는 pointer가 0이 되면 object 해제.
-
-- 하지만 cycle이 일어나게 되면 object를 가르키는 포인터는 늘 1개가 남게 되고, 이는 메모리 leak으로 이어지게 됨. 
-
-- 해당코드 cat.mVar를 가르키는 포인터는 stack의의 pointer와 자기자신을 가르키는 포인터 두개
-
-- 함수가 해제되면 stack위의 pointer는 메모리에서 사라지게 되고 heap에 남아있는 cat.mVar는 자기자신을 가르키는 포인터 1개가 영원히 남게 됨
-
-- ref count가 1인채로 0이 될 수 없기 때문에 memory 안에 cat.mVar는 영원히 상주하게되어 메모리 릭이 일어남
