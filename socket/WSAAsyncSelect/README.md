@@ -10,9 +10,8 @@
 - 비동기 통지의 경우 한번 등록하면 계속해서 호출할 필요가 없기 때문에, 부하가 적다는 이점
 
 - 부적으로 따로 체크하는 것이 아니라 운영체제가 I/O 상황이 될때 인터럽트를 사용하는 방식으로 구현되기 때문에 운영체제 수준에서도 연산량이 많이 줄어듬.
-- 
+
 - 다른 운영체제에서 지원하지 않는 기능이기 때문에, 다른 구동환경에서 같은 프로세스를 사용할 수가 없다는 단점
-- 
 ![image](https://user-images.githubusercontent.com/54939319/203927208-4776ead4-41a6-4a54-889b-46ee64bdfa16.png)
 
 ```C
@@ -35,3 +34,38 @@ enum NetworkEvent
 };
 
 ```
+
+
+```C
+#define WM_SOCKET (WM_USER + 1)
+int main(){
+HWND hWnd = MakeWindow();
+...
+   WSAAsyncSelect( socket, hWnd, WM_SOCKET, FD_READ | FD_WRITE | FD_CLOSE ); 
+  //소켓에 AsyncSelect 이벤트 등록
+...
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+...
+switch(uMsg)
+{
+   case WM_SOCKET:
+   {
+      SOCKET selectedSocket = wParam; //socket번호는 wParam으로 전달
+      int event = WSAGETSELECTEVENT(lParam); //이벤트 정보는 lParam에서 추출
+      switch(event)
+      {
+         //I/O 이벤트별 대응코드
+      }
+   }
+}
+```
+
+
+- 커널에게 미리 등록만 해두면 유저는 따로 커널에게 확인하여 동기화하지 않더라도 알아서 메시지가 발생.
+ 
+- Sync보다 상당히 편하고, 매 프레임마다 체크를 하지 않아도 되니 부담 적음.
+ 
+- WAS 함수자체에서 I/O상황을 리턴받는 것이 아니고 등록만 하는 것이다 보니 Block이 걸릴 소지가 없다. 따라서 Non-Block 방식
