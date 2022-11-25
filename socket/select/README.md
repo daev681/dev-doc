@@ -28,3 +28,48 @@ const struct timeval* timeout);    // 검사하는 시간에 제한을 둔다. N
 ### fd_set을 제어하는 매크로 함수
 
 ![image](https://user-images.githubusercontent.com/54939319/203883234-44d4b1c2-5524-4091-9263-212f4bc922af.png)
+
+#### EX
+
+7개의 소켓을 만들었고, 각 소켓은 3~9까지 fdnum을 부여받았다고 가정하자. 그럼 fd_set의 모습은 다음과 같을 것이다.
+
+![image](https://user-images.githubusercontent.com/54939319/203883513-51cfc9c3-5223-44a7-a124-277dc69c1f8b.png)
+
+```c
+// 3,5,8 소켓에 대해 읽기를 검사하기 위해 3, 5, 8번을 등록
+FD_SET(3, &readfds);
+FD_SET(5, &readfds);
+FD_SET(8, &readfds);
+
+
+```
+
+![image](https://user-images.githubusercontent.com/54939319/203883649-a0d22277-cfef-40c3-8e34-03bfbb22ae4b.png)
+
+- select()로 fd_set을 검사한다.
+
+- nfds가 9인 이유는 검사할 비트가 배열 번호상 9번 비트
+
+
+```c
+select(9, &readfds, (fd_set*)0, (fd_set*)0, NULL);
+```
+
+- 예를들어 3번과 5번에서 변화가 생겼다면 fd_set의 모습은 다음처럼 변한다.
+
+![image](https://user-images.githubusercontent.com/54939319/203883756-855fe5c9-313a-4a54-824b-b77745dfa110.png)
+
+- fd_set은 이전 상태를 유지하지 않으므로 다시 또 3, 5, 8번 소켓을 검사하고 싶다면 다시 FD_SET으로 등록시키고 사용해야 한다. 
+
+- select로 모든 소켓 중에 뭔가 변화가 있는 소켓이 있는지 알아냈으니 이제 FD_ISSET으로 어떤 소켓에 변화가 있는지 검사를 할 수 있다
+
+```c
+FD_SET(int fd, fd_set* fdset) // fdset의 fd번째 인자를 1로 set (fd번 소켓을 1로 올린다는 소리)
+FD_ISSET(int fd, fd_set* fdset) // fdset의 fd번째 인자 값을 return
+```
+
+3,5 소켓 변화 read_fds의 fd_arrya는 [0][0][0][1][0][1][0] ...
+
+FD_ISSET(3, &read_fds) 와 FD_ISSET(5, &read_fds)의 값은 1이 될 것이고
+
+반복문을 돌면서 소켓 0번부터 최대 소켓번호 n 까지 순회하며 read_fds를 검사하면 어떤 소켓이 데이터를 수신 받았는지 알 수 있다.
