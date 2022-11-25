@@ -69,7 +69,9 @@ FD_ISSET(int fd, fd_set* fdset) // fdset의 fd번째 인자 값을 return
 ```
 
 3,5 소켓 변화 read_fds의 fd_arrya는 [0][0][0][1][0][1][0] ...
-
-FD_ISSET(3, &read_fds) 와 FD_ISSET(5, &read_fds)의 값은 1이 될 것이고
+```c
+FD_ISSET(3, &read_fds)  = 1
+FD_ISSET(5, &read_fds)  = 1
+```
 
 반복문을 돌면서 소켓 0번부터 최대 소켓번호 n 까지 순회하며 read_fds를 검사하면 어떤 소켓이 데이터를 수신 받았는지 알 수 있다.
