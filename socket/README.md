@@ -1,10 +1,10 @@
 
-- Select
+- Select I/O Model
 
-- WSAAsyncSelect
+- WSAAsyncSelect I/O Model
 
-- WSAEventSelect
+- WSAEventSelect I/O Model
 
-- Overapped
+- Overapped I/O Model
 
-- IOCP
+- IOCP I/O Model
