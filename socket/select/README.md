@@ -17,3 +17,14 @@ fd_set* exceptfds,    // 예외를 검사할 fd_set
 const struct timeval* timeout);    // 검사하는 시간에 제한을 둔다. NULL이면 무한정 대기한다.
 // return값 : 0 <= 변경이 생긴 파일의 수, -1 = 실패
 ```
+
+
+- select()의 핵심은 fd_set을 제어
+
+- fd_set은 파일 디스크립터 번호를 배열로 가지는 '비트 필드'구조체
+
+- select()는 fd_set을 순회하며, fd_set값이 1인 파일에 대해 읽기 또는 쓰기를 검사하고 변화가 생긴 fd_set을 1 생성 , 없으면 0
+
+### fd_set을 제어하는 매크로 함수
+
+![image](https://user-images.githubusercontent.com/54939319/203883234-44d4b1c2-5524-4091-9263-212f4bc922af.png)
